@@ -11,9 +11,9 @@ def search_user():
     db = sqlite3.connect("users.db")
     cursor = db.cursor()
 
-    # SINK: Ejecución de query donde el dato entra sin sanitizar
-    # VULNERABILIDAD: SQL Injection
-    query = "SELECT * FROM profiles WHERE user = '" + username + "'"
-    cursor.execute(query)
+    # SINK: Ejecución de query con parámetro seguro
+    # FIX: Evitar SQL Injection usando consulta parametrizada
+    query = "SELECT * FROM profiles WHERE user = ?"
+    cursor.execute(query, (username,))
 
     return str(cursor.fetchone())
